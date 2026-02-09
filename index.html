@@ -13,9 +13,13 @@
         .profile-card:hover { transform: scale(1.05); }
         .fade-in { animation: fadeIn 0.4s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Scrollbar Styling */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
         .animate-pulse-once { animation: pulse 0.5s ease-in-out; }
         
         /* Table Sticky Handling */
@@ -27,6 +31,13 @@
         /* Cell Hover Effect */
         td:hover { background-color: rgba(255, 255, 255, 0.05); }
         tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
+
+        /* Zoom In Animation for Modal */
+        .zoom-in { animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -60,6 +71,7 @@
                     <span class="text-gray-400 whitespace-nowrap"><i class="fas fa-calendar-alt mr-2"></i>เลือกเดือน:</span>
                     <input type="month" id="team-month" class="bg-transparent text-white font-bold outline-none cursor-pointer" onchange="renderMatrixTable()">
                 </div>
+                <div class="text-xs text-gray-500 ml-auto hidden md:block">* คลิกที่วันที่เพื่อดูรายละเอียดรายวัน</div>
             </div>
 
             <div class="overflow-auto flex-1 bg-[#141414] relative scroll-smooth" id="matrix-container">
@@ -69,6 +81,28 @@
                     <tbody id="matrix-body" class="text-gray-300 text-sm">
                         </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="daily-modal" class="fixed inset-0 bg-black/90 z-[80] hidden flex items-center justify-center p-4 fade-in">
+        <div class="bg-[#181818] w-full max-w-2xl max-h-[90vh] rounded-2xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col zoom-in">
+            <div class="bg-[#222] p-4 border-b border-gray-700 flex justify-between items-center shrink-0">
+                <div>
+                    <h2 id="daily-modal-title" class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-calendar-day text-indigo-500"></i> <span>-</span>
+                    </h2>
+                    <span id="daily-modal-shift" class="text-xs text-gray-400 font-mono mt-1 block"></span>
+                </div>
+                <button onclick="closeDailyModal()" class="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 w-8 h-8 rounded-full transition"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="daily-modal-content" class="p-4 overflow-y-auto space-y-3 custom-scrollbar">
+                </div>
+
+            <div class="bg-[#1a1a1a] p-4 border-t border-gray-800 flex justify-between items-center shrink-0">
+                <span class="text-gray-400 text-sm font-bold uppercase">Grand Total (All Users)</span>
+                <span id="daily-modal-total" class="text-2xl font-bold text-indigo-400 drop-shadow-md font-mono">0</span>
             </div>
         </div>
     </div>
@@ -444,10 +478,8 @@
             if (row) {
                 if (row.classList.contains('hidden')) {
                     row.classList.remove('hidden');
-                    row.classList.add('sum-row-enter');
                 } else {
                     row.classList.add('hidden');
-                    row.classList.remove('sum-row-enter');
                 }
             }
         }
@@ -640,7 +672,7 @@
                 // แสดงกะใน Header ถ้าไม่ใช่ Free Run และไม่ใช่วันหยุด
                 let shiftBadge = '';
                 if (label === 'Free') {
-                     shiftBadge = `<span class="block text-[8px] bg-blue-600 text-white rounded px-1 mt-0.5">Free</span>`;
+                      shiftBadge = `<span class="block text-[8px] bg-blue-600 text-white rounded px-1 mt-0.5">Free</span>`;
                 } else if (!isHoliday) {
                     let color = 'bg-gray-700';
                     if(shift==='A') color='bg-green-600';
@@ -651,9 +683,11 @@
                     shiftBadge = `<span class="block text-[8px] opacity-30 mt-1">-</span>`;
                 }
 
-                headerHTML += `<th class="p-2 text-center border-b border-gray-700 min-w-[45px] text-[10px] ${bgClass} align-top pt-2">
+                // Add Click Event here
+                headerHTML += `<th onclick="openDailyDetail(${d})" class="p-2 text-center border-b border-gray-700 min-w-[45px] text-[10px] ${bgClass} align-top pt-2 cursor-pointer hover:bg-white/10 hover:text-white transition group relative select-none">
+                    <div class="absolute top-0 right-0 p-0.5 opacity-0 group-hover:opacity-100 text-[8px] text-indigo-400"><i class="fas fa-search-plus"></i></div>
                     <span class="opacity-70">${dayName}</span><br>
-                    <span class="text-sm font-bold">${d}</span>
+                    <span class="text-sm font-bold group-hover:scale-110 inline-block transition">${d}</span>
                     ${shiftBadge}
                 </th>`;
             }
@@ -782,6 +816,118 @@
             footerHTML += `</tr>`;
 
             tbody.innerHTML = bodyHTML + footerHTML;
+        }
+
+        // ================= DAILY DETAIL MODAL LOGIC (NEW) =================
+        function openDailyDetail(day) {
+            const monthInput = document.getElementById('team-month').value;
+            if (!monthInput) return;
+            
+            const [yearStr, monthStr] = monthInput.split('-');
+            const fullDate = `${yearStr}-${monthStr}-${day.toString().padStart(2, '0')}`;
+            const dateObj = new Date(parseInt(yearStr), parseInt(monthStr)-1, day);
+            
+            // 1. Setup Header
+            const thDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            const { shift, isHoliday } = getShiftAndType(dateObj);
+            
+            document.getElementById('daily-modal-title').innerHTML = `<i class="fas fa-calendar-day text-indigo-500 mr-2"></i> ${thDate}`;
+            document.getElementById('daily-modal-shift').innerHTML = `กะ: ${shift} ${isHoliday ? '(วันหยุด)' : ''}`;
+            
+            // 2. Build User Cards
+            const container = document.getElementById('daily-modal-content');
+            container.innerHTML = '';
+            
+            let grandTotal = 0;
+
+            ORDERED_USER_KEYS.forEach(uid => {
+                const u = users[uid];
+                const rec = records.find(r => r.userId === uid && r.workDate === fullDate);
+                
+                let uTotal = 0;
+                
+                // Header (Pic + Name)
+                const headerSection = `
+                    <div class="flex items-center gap-3 w-32 shrink-0">
+                        <div class="relative">
+                            <img src="${u.avatar}" class="w-12 h-12 rounded-full bg-gray-700 border-2 border-gray-600 shadow-sm">
+                            ${rec ? '<div class="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-[#222]"></div>' : ''}
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-200 text-sm">${u.shortName}</div>
+                            <div class="text-[10px] text-gray-500 font-mono uppercase">${uid}</div>
+                        </div>
+                    </div>
+                `;
+
+                // Content (Work items or Status)
+                let contentSection = '';
+                
+                if (rec) {
+                    if (!rec.status || rec.status === 'work') {
+                        uTotal = (rec.mlpr||0) + (rec.mnpr||0) + (rec.reconfirmed||0) + (rec.txn||0) + (rec.log||0) + (rec.temp||0) + (rec.qc||0) + (rec.royal||0);
+                        grandTotal += uTotal;
+
+                        let badges = [];
+                        const addBadge = (val, label, colorCls) => {
+                            if(val > 0) badges.push(`<div class="flex flex-col items-center bg-[#111] rounded p-1.5 border border-gray-700 min-w-[50px]"><span class="text-[9px] text-gray-500 font-bold mb-0.5">${label}</span><span class="${colorCls} font-bold font-mono text-sm">${val}</span></div>`);
+                        };
+
+                        addBadge(rec.mlpr, 'ML', 'text-rose-400');
+                        addBadge(rec.mnpr, 'MN', 'text-blue-400');
+                        addBadge(rec.reconfirmed, 'Re', 'text-emerald-400');
+                        addBadge(rec.txn, 'TXN', 'text-indigo-400');
+                        addBadge(rec.log, 'LOG', 'text-orange-400');
+                        addBadge(rec.temp, 'Q', 'text-pink-400');
+                        addBadge(rec.qc, 'QC', 'text-teal-400');
+                        addBadge(rec.royal, '👑', 'text-yellow-400');
+
+                        if (badges.length > 0) {
+                            contentSection = `<div class="flex flex-wrap gap-2 items-center flex-1">${badges.join('')}</div>`;
+                        } else {
+                            contentSection = `<div class="flex-1 text-center text-gray-600 text-sm italic border border-dashed border-gray-700 rounded p-2">Standby / ไม่มีเคส</div>`;
+                        }
+                    } else {
+                        // Leave/Off Status
+                        let statusTxt = rec.status;
+                        let statusStyle = 'bg-gray-800 text-gray-400';
+                        switch(rec.status) {
+                            case 'vacation': statusTxt='🏖️ ลาพักร้อน'; statusStyle='bg-yellow-900/20 text-yellow-400 border border-yellow-900/50'; break;
+                            case 'sick': statusTxt='🤒 ลาป่วย'; statusStyle='bg-red-900/20 text-red-400 border border-red-900/50'; break;
+                            case 'personal': statusTxt='📝 ลากิจ'; statusStyle='bg-orange-900/20 text-orange-400 border border-orange-900/50'; break;
+                            case 'off': statusTxt='🏠 หยุด'; statusStyle='bg-gray-800 text-gray-500 border border-gray-700'; break;
+                            case 'swap': statusTxt='🔄 สลับกะ'; statusStyle='bg-blue-900/20 text-blue-400 border border-blue-900/50'; break;
+                        }
+                        contentSection = `<div class="flex-1 flex justify-center"><span class="${statusStyle} px-4 py-2 rounded-lg font-bold text-sm w-full text-center max-w-[200px]">${statusTxt}</span></div>`;
+                    }
+                } else {
+                    // No Record
+                    contentSection = `<div class="flex-1 flex justify-center"><span class="text-gray-700 italic text-xs">... ยังไม่บันทึกข้อมูล ...</span></div>`;
+                }
+
+                // Total Section
+                const totalSection = `
+                    <div class="flex flex-col items-end justify-center w-16 shrink-0 border-l border-gray-700 pl-3">
+                        <span class="text-[10px] text-gray-500 uppercase font-bold">Total</span>
+                        <span class="text-xl font-bold ${uTotal > 0 ? 'text-white' : 'text-gray-600'}">${uTotal > 0 ? uTotal.toLocaleString() : '-'}</span>
+                    </div>
+                `;
+
+                const rowDiv = document.createElement('div');
+                rowDiv.className = "bg-[#252525] p-3 rounded-xl flex items-center gap-2 border border-gray-700/50 hover:border-indigo-500/30 transition shadow-sm";
+                rowDiv.innerHTML = headerSection + contentSection + totalSection;
+                container.appendChild(rowDiv);
+            });
+
+            // 3. Update Footer
+            document.getElementById('daily-modal-total').innerText = grandTotal.toLocaleString();
+
+            // 4. Show Modal
+            document.getElementById('daily-modal').classList.remove('hidden');
+        }
+
+        function closeDailyModal() {
+            document.getElementById('daily-modal').classList.add('hidden');
         }
 
         // ================= SUMMARY REPORT LOGIC =================
