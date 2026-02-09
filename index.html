@@ -62,7 +62,7 @@
     <div id="team-modal" class="fixed inset-0 bg-black/95 z-[70] hidden flex items-center justify-center p-2 md:p-4 fade-in">
         <div class="bg-[#181818] w-full max-w-[95vw] rounded-2xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col h-[95vh]">
             <div class="bg-[#222] p-4 border-b border-gray-700 flex justify-between items-center shrink-0">
-                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3"><i class="fas fa-th text-indigo-500"></i> ตารางสรุปงานรายเดือน	</h2>
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3"><i class="fas fa-th text-indigo-500"></i> ตารางสรุปงานรายเดือน</h2>
                 <button onclick="closeTeamDashboard()" class="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 w-8 h-8 rounded-full"><i class="fas fa-times"></i></button>
             </div>
             
@@ -76,10 +76,8 @@
 
             <div class="overflow-auto flex-1 bg-[#141414] relative scroll-smooth" id="matrix-container">
                 <table class="w-max text-left border-collapse">
-                    <thead id="matrix-header" class="bg-[#202020] text-gray-400 text-xs uppercase sticky-header shadow-lg">
-                        </thead>
-                    <tbody id="matrix-body" class="text-gray-300 text-sm">
-                        </tbody>
+                    <thead id="matrix-header" class="bg-[#202020] text-gray-400 text-xs uppercase sticky-header shadow-lg"></thead>
+                    <tbody id="matrix-body" class="text-gray-300 text-sm"></tbody>
                 </table>
             </div>
         </div>
@@ -97,8 +95,7 @@
                 <button onclick="closeDailyModal()" class="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 w-8 h-8 rounded-full transition"><i class="fas fa-times"></i></button>
             </div>
 
-            <div id="daily-modal-content" class="p-4 overflow-y-auto space-y-3 custom-scrollbar">
-                </div>
+            <div id="daily-modal-content" class="p-4 overflow-y-auto space-y-3 custom-scrollbar"></div>
 
             <div class="bg-[#1a1a1a] p-4 border-t border-gray-800 flex justify-between items-center shrink-0">
                 <span class="text-gray-400 text-sm font-bold uppercase">Grand Total (All Users)</span>
@@ -117,21 +114,37 @@
                 <div class="bg-black/30 p-4 rounded-lg border border-gray-700 space-y-3">
                     <div class="flex items-center gap-2 mb-2"><span class="bg-indigo-600 text-xs font-bold px-2 py-1 rounded text-white">STEP 1</span><h3 class="text-sm text-gray-300 font-bold">เลือกวันที่และกะ</h3></div>
                     <div class="flex gap-4">
-                        <div class="flex-1"><label class="block text-gray-500 text-[10px] uppercase mb-1">วันที่</label><input type="date" id="summary-date" class="w-full bg-[#2a2a2a] border border-gray-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-indigo-500 font-bold" onchange="renderSummaryUserList()"></div>
-                        <div class="w-1/3"><label class="block text-gray-500 text-[10px] uppercase mb-1">กะ</label><select id="summary-shift" class="w-full bg-[#2a2a2a] border border-gray-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-indigo-500 font-bold"><option value="เช้า (A)">เช้า (A)</option><option value="บ่าย (B)">บ่าย (B)</option><option value="ดึก (C)">ดึก (C)</option></select></div>
+                        <div class="flex-1">
+                            <label class="block text-gray-500 text-[10px] uppercase mb-1">วันที่</label>
+                            <input type="date" id="summary-date" class="w-full bg-[#2a2a2a] border border-gray-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-indigo-500 font-bold" onchange="renderSummaryUserList()">
+                        </div>
+                        <div class="w-1/3">
+                            <label class="block text-gray-500 text-[10px] uppercase mb-1">กะ</label>
+                            <select id="summary-shift" class="w-full bg-[#2a2a2a] border border-gray-600 rounded px-3 py-2 text-white text-sm outline-none focus:border-indigo-500 font-bold">
+                                <option value="เช้า (A)">เช้า (A)</option>
+                                <option value="บ่าย (B)">บ่าย (B)</option>
+                                <option value="ดึก (C)">ดึก (C)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-black/30 p-4 rounded-lg border border-gray-700">
                     <div class="flex items-center gap-2 mb-3"><span class="bg-indigo-600 text-xs font-bold px-2 py-1 rounded text-white">STEP 2</span><h3 class="text-sm text-gray-300 font-bold">เช็คชื่อพนักงาน</h3></div>
                     <div id="summary-user-list" class="space-y-2"></div>
                 </div>
-                <button onclick="generateSummaryText()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg font-bold shadow-lg transition flex items-center justify-center gap-2 shrink-0 group ring-1 ring-indigo-400/50"><i class="fas fa-magic group-hover:animate-pulse"></i> สร้างข้อความตัวอย่าง (Preview)</button>
+                
+                <button onclick="generateSummaryText()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg font-bold shadow-lg transition flex items-center justify-center gap-2 shrink-0 group ring-1 ring-indigo-400/50">
+                    <i class="fas fa-magic group-hover:animate-pulse"></i> สร้างข้อความตัวอย่าง (Preview)
+                </button>
+
                 <div id="summary-result-section" class="hidden flex flex-col gap-4 animate-pulse-once">
                     <div class="relative flex flex-col">
                          <label class="text-gray-400 text-xs font-bold mb-1 flex justify-between items-center"><span><i class="fas fa-file-alt mr-1"></i>ข้อความรายงาน</span><span class="text-[10px] text-green-400 bg-green-900/30 px-2 rounded-full">แก้ไขได้</span></label>
                         <textarea id="summary-text" class="w-full h-40 bg-black/50 border border-gray-600 rounded p-4 text-gray-300 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-indigo-500 shadow-inner ring-1 ring-gray-700"></textarea>
                     </div>
-                    <button onclick="copySummaryAndClose()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white py-3 rounded-lg font-bold transition flex justify-center items-center gap-2 shadow-lg mb-2"><i class="fas fa-copy"></i> คัดลอกและปิด</button>
+                    <button onclick="copySummaryAndClose()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white py-3 rounded-lg font-bold transition flex justify-center items-center gap-2 shadow-lg mb-2">
+                        <i class="fas fa-copy"></i> คัดลอกและปิด
+                    </button>
                 </div>
             </div>
         </div>
@@ -192,15 +205,11 @@
                                 <input type="number" id="val-reconfirmed" class="hidden w-full bg-black/40 border border-gray-600 rounded p-2 text-center text-white text-xl font-bold focus:border-emerald-500 outline-none animate-pulse-once" placeholder="ระบุจำนวน">
                             </div>
                         </div>
-
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-2">
                             <div class="bg-[#1a1a1a] p-3 rounded-lg border border-gray-800 text-center hover:bg-[#222] transition"><label class="text-indigo-400 font-bold text-sm block mb-2">TXN</label><input type="number" id="val-txn" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-center text-white text-lg font-bold focus:border-indigo-500 outline-none" placeholder="-"></div>
                             <div class="bg-[#1a1a1a] p-3 rounded-lg border border-gray-800 text-center hover:bg-[#222] transition"><label class="text-orange-400 font-bold text-sm block mb-2">LOG</label><input type="number" id="val-log" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-center text-white text-lg font-bold focus:border-orange-500 outline-none" placeholder="-"></div>
-                            
                             <div class="bg-[#1a1a1a] p-3 rounded-lg border border-gray-800 text-center hover:bg-[#222] transition"><label class="text-pink-400 font-bold text-sm block mb-2">น้องถาม</label><input type="number" id="val-temp" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-center text-white text-lg font-bold focus:border-pink-500 outline-none" placeholder="-"></div>
-                            
                             <div class="bg-[#1a1a1a] p-3 rounded-lg border border-gray-800 text-center hover:bg-[#222] transition"><label class="text-teal-400 font-bold text-sm block mb-2">QC</label><input type="number" id="val-qc" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-center text-white text-lg font-bold focus:border-teal-500 outline-none" placeholder="-"></div>
-                            
                             <div class="bg-[#1a1a1a] p-3 rounded-lg border border-gray-800 text-center col-span-2 md:col-span-1 hover:bg-[#222] transition"><label class="text-yellow-400 font-bold text-sm block mb-2">ขบวนเสด็จ</label><input type="number" id="val-royal" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-center text-white text-lg font-bold focus:border-yellow-500 outline-none" placeholder="-"></div>
                         </div>
                     </div>
@@ -241,7 +250,6 @@
                                     <th class="px-2 py-4 text-center text-pink-400 bg-black">น้องถาม</th>
                                     <th class="px-2 py-4 text-center text-teal-400 bg-black">QC</th>
                                     <th class="px-2 py-4 text-center text-yellow-400 bg-black">ขบวนเสด็จ</th>
-                                    
                                     <th class="px-2 py-4 text-center text-white bg-[#222] border-l border-gray-800">Total</th>
                                     <th class="px-4 py-4 text-right bg-black">Action</th>
                                 </tr>
@@ -277,8 +285,10 @@
             'new': { name: 'ไอสัสนิวสุดหล่อ', shortName: 'นิว', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=New&backgroundColor=ffdfbf&style=circle' },
             'pook': { name: 'พี่ปุ๊ก', shortName: 'ปุ๊ก', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pook&backgroundColor=c0aede' }
         };
+        
         let users = JSON.parse(localStorage.getItem('app_users')) || defaultUsers;
         if(!users.pop.shortName) users = defaultUsers; 
+        
         let currentUser = null;
         let records = JSON.parse(localStorage.getItem('work_logs')) || [];
         let uploadTargetUser = null;
@@ -319,6 +329,7 @@
             if(tMonth) tMonth.value = currentMonth;
         }
 
+        // ================= API & SYNC =================
         function syncData() {
             console.log("Syncing...");
             if (!GOOGLE_SCRIPT_URL) return;
@@ -359,7 +370,6 @@
                 return;
             }
 
-            showNotification('กำลังส่งรูปไปเก็บที่ Drive... (รอสักครู่)', 'success');
             const payload = {
                 action: 'update_profile',
                 userId: userId,
@@ -475,13 +485,7 @@
 
         function toggleSumRow() {
             const row = document.getElementById('month-summary-row');
-            if (row) {
-                if (row.classList.contains('hidden')) {
-                    row.classList.remove('hidden');
-                } else {
-                    row.classList.add('hidden');
-                }
-            }
+            if (row) row.classList.toggle('hidden');
         }
 
         function loadForAdd(dateStr) {
@@ -496,8 +500,16 @@
         function switchTab(t) {
             const f = document.getElementById('section-form'), h = document.getElementById('section-history');
             const tf = document.getElementById('tab-form'), th = document.getElementById('tab-history');
-            if(t==='form') { f.classList.remove('hidden'); h.classList.add('hidden'); tf.className="pb-3 border-b-2 border-red-600 text-white font-bold px-2 text-lg"; th.className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-300 font-bold px-2 text-lg"; }
-            else { f.classList.add('hidden'); h.classList.remove('hidden'); th.className="pb-3 border-b-2 border-red-600 text-white font-bold px-2 text-lg"; tf.className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-300 font-bold px-2 text-lg"; renderMyHistory(); }
+            if(t==='form') { 
+                f.classList.remove('hidden'); h.classList.add('hidden'); 
+                tf.className="pb-3 border-b-2 border-red-600 text-white font-bold px-2 text-lg"; 
+                th.className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-300 font-bold px-2 text-lg"; 
+            } else { 
+                f.classList.add('hidden'); h.classList.remove('hidden'); 
+                th.className="pb-3 border-b-2 border-red-600 text-white font-bold px-2 text-lg"; 
+                tf.className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-300 font-bold px-2 text-lg"; 
+                renderMyHistory(); 
+            }
         }
 
         function toggleWorkInputs() {
@@ -506,7 +518,10 @@
             if (status === 'work') { metricsDiv.classList.remove('hidden', 'opacity-50', 'pointer-events-none'); } else { metricsDiv.classList.add('hidden'); }
         }
 
-        function toggleInput(k) { const c=document.getElementById(`check-${k}`),v=document.getElementById(`val-${k}`); if(c.checked){v.classList.remove('hidden');v.focus();}else{v.classList.add('hidden');v.value='';} }
+        function toggleInput(k) { 
+            const c=document.getElementById(`check-${k}`),v=document.getElementById(`val-${k}`); 
+            if(c.checked){v.classList.remove('hidden');v.focus();}else{v.classList.add('hidden');v.value='';} 
+        }
 
         function handleFormSubmit(e) {
             e.preventDefault();
@@ -599,40 +614,37 @@
         function logout() { currentUser = null; document.getElementById('dashboard-page').classList.add('hidden'); document.getElementById('profile-page').classList.remove('hidden'); resetForm(); }
         function showNotification(msg, type) { const area = document.getElementById('notification-area'); const d = document.createElement('div'); d.className = `${type==='success'?'bg-green-600':'bg-red-600'} text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 fade-in font-bold`; d.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`; area.appendChild(d); setTimeout(() => d.remove(), 3000); }
 
-        // ================= HELPER: คำนวณกะและประเภทวัน =================
+        // ================= HELPER: SHIFT LOGIC =================
         function getShiftAndType(dateObj) {
             const y = dateObj.getFullYear();
             const m = dateObj.getMonth(); 
             const d = dateObj.getDate();
-            const dayOfWeek = dateObj.getDay(); // 0=Sun, ..., 3=Wed, 4=Thu
+            const dayOfWeek = dateObj.getDay(); 
 
-            // 1. คำนวณกะ (Cycle Logic)
-            // ใช้ 2 ม.ค. 2026 เป็นจุดอ้างอิงเริ่มต้น (ศุกร์แรกของปี ซึ่งเริ่มรอบกะ B)
+            // 1. Shift Cycle (Ref: Jan 2, 2026 = Fri, Cycle Starts with B)
             const refDate = new Date(2026, 0, 2); 
             const diffTime = dateObj.getTime() - refDate.getTime();
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             
-            // หาว่าอยู่สัปดาห์ที่เท่าไหร่ (1 รอบ = 7 วัน ศุกร์-พฤหัส)
             let weekIndex = Math.floor(diffDays / 7);
             if (diffDays < 0) weekIndex = Math.floor(diffDays / 7);
 
-            // Pattern: 0=B, 1=A, 2=C
+            // Cycle: B -> A -> C
             const shifts = ['B', 'A', 'C'];
             let shiftIndex = (weekIndex % 3 + 3) % 3; 
-            const calculatedShift = shifts[shiftIndex]; // กะที่คำนวณได้ตามรอบ
+            const calculatedShift = shifts[shiftIndex];
 
-            // 2. เช็คช่วง Running Free (1-5 ม.ค. 2026)
+            // 2. Special Case: Running Free (1-5 Jan 2026)
             if (y === 2026 && m === 0 && d >= 1 && d <= 5) {
                 return { shift: 'Free', isHoliday: false, label: 'Free', weeklyShift: calculatedShift };
             }
 
-            // 3. เช็ควันหยุด (พุธ=3, พฤหัส=4)
+            // 3. Holiday (Wed=3, Thu=4)
             if (dayOfWeek === 3 || dayOfWeek === 4) {
-                // แม้เป็นวันหยุด แต่เราส่ง weeklyShift กลับไปเพื่อให้ Dropdown เลือกถูก
                 return { shift: '-', isHoliday: true, label: '', weeklyShift: calculatedShift };
             }
 
-            // 4. วันทำงานปกติ
+            // 4. Normal Work Day
             return { shift: calculatedShift, isHoliday: false, label: calculatedShift, weeklyShift: calculatedShift };
         }
 
@@ -646,7 +658,7 @@
 
             const [yearStr, monthStr] = monthInput.split('-');
             const year = parseInt(yearStr);
-            const month = parseInt(monthStr); // 1-12
+            const month = parseInt(monthStr);
             const daysInMonth = new Date(year, month, 0).getDate();
             
             const thead = document.getElementById('matrix-header');
@@ -660,16 +672,13 @@
                     <th class="p-3 text-center bg-[#252525] border-b border-gray-700 min-w-[60px] text-white">รวม</th>
             `;
             
-            // Loop 1-31 Columns for Header
             for(let d=1; d<=daysInMonth; d++) {
-                const dayDate = new Date(year, month - 1, d); // Month index 0-11
+                const dayDate = new Date(year, month - 1, d);
                 const dayName = dayDate.toLocaleDateString('th-TH', { weekday: 'short' });
                 const { shift, isHoliday, label } = getShiftAndType(dayDate);
                 
-                // สีแดงวันหยุด (พุธ/พฤหัส)
                 const bgClass = isHoliday ? 'bg-red-900/40 text-red-200' : '';
                 
-                // แสดงกะใน Header ถ้าไม่ใช่ Free Run และไม่ใช่วันหยุด
                 let shiftBadge = '';
                 if (label === 'Free') {
                       shiftBadge = `<span class="block text-[8px] bg-blue-600 text-white rounded px-1 mt-0.5">Free</span>`;
@@ -683,7 +692,6 @@
                     shiftBadge = `<span class="block text-[8px] opacity-30 mt-1">-</span>`;
                 }
 
-                // Add Click Event here
                 headerHTML += `<th onclick="openDailyDetail(${d})" class="p-2 text-center border-b border-gray-700 min-w-[45px] text-[10px] ${bgClass} align-top pt-2 cursor-pointer hover:bg-white/10 hover:text-white transition group relative select-none">
                     <div class="absolute top-0 right-0 p-0.5 opacity-0 group-hover:opacity-100 text-[8px] text-indigo-400"><i class="fas fa-search-plus"></i></div>
                     <span class="opacity-70">${dayName}</span><br>
@@ -708,7 +716,7 @@
                     
                     bodyHTML += `<tr class="${borderClass} hover:bg-white/5 transition">`;
                     
-                    // Column 1: User Profile
+                    // Col 1: Profile
                     if(taskIndex === 0) {
                         let userMonthTotal = 0;
                         records.forEach(r => {
@@ -728,10 +736,10 @@
                         `;
                     }
 
-                    // Column 2: Task Label
+                    // Col 2: Label
                     bodyHTML += `<td class="p-2 sticky-col-2 bg-[#1a1a1a] border-r border-gray-700 text-xs font-bold ${task.color} z-20 shadow-[2px_0_5px_rgba(0,0,0,0.5)]">${task.label}</td>`;
 
-                    // Column 3: Monthly Total
+                    // Col 3: Total Task
                     let taskTotal = 0;
                     records.forEach(r => {
                         if(r.userId === uid && r.workDate.startsWith(`${yearStr}-${monthStr}`) && (!r.status || r.status === 'work')) {
@@ -741,7 +749,7 @@
                     const totalVal = taskTotal > 0 ? taskTotal.toLocaleString() : '-';
                     bodyHTML += `<td class="p-2 text-center bg-[#222] font-bold text-white border-r border-gray-700">${totalVal}</td>`;
 
-                    // Columns 4...: Daily Cells
+                    // Col 4+: Days
                     for(let d=1; d<=daysInMonth; d++) {
                         const dayStr = d.toString().padStart(2, '0');
                         const fullDate = `${yearStr}-${monthStr}-${dayStr}`;
@@ -749,15 +757,10 @@
                         const rec = records.find(r => r.userId === uid && r.workDate === fullDate);
                         const { shift, isHoliday, label } = getShiftAndType(dateObj);
                         
-                        // --- Logic การแสดงผลในช่อง ---
-                        
-                        // กรณี 1: มีการบันทึกข้อมูล (User ลงข้อมูลไว้แล้ว ให้เชื่อข้อมูลนั้นก่อน ไม่ว่าจะวันหยุดหรือไม่)
                         if (rec) {
                             if (rec.status && rec.status !== 'work') {
-                                // ลา/สลับกะ/อื่นๆ
                                 if (taskIndex === 0) {
-                                    let statusLabel = '';
-                                    let statusBg = '';
+                                    let statusLabel = '', statusBg = '';
                                     switch(rec.status) {
                                         case 'vacation': statusLabel = 'ลา<br>พัก<br>ร้อน'; statusBg = 'bg-yellow-900/20 text-yellow-500'; break;
                                         case 'sick': statusLabel = 'ลา<br>ป่วย'; statusBg = 'bg-red-900/20 text-red-500'; break;
@@ -769,35 +772,22 @@
                                     bodyHTML += `<td rowspan="${TASK_CONFIG.length}" class="p-1 border-r border-gray-700/50 text-center text-[10px] leading-tight font-bold align-middle ${statusBg} hover:brightness-125 transition-all cursor-default select-none">${statusLabel}</td>`;
                                 }
                             } else {
-                                // ทำงานปกติ (Work)
                                 const val = rec[task.key] || 0;
                                 let cellContent = val > 0 ? val : '-';
                                 let cellClass = val > 0 ? `font-bold font-mono ${task.color} ${task.bg}` : 'text-gray-500';
                                 if (val > 0) dailyTotals[d] += val;
                                 bodyHTML += `<td class="p-1 border-r border-gray-800/50 text-center text-xs ${cellClass}">${cellContent}</td>`;
                             }
-                        } 
-                        // กรณี 2: ไม่มีข้อมูลบันทึก (แสดงค่า Default ตามเงื่อนไข)
-                        else {
-                            // 2.1 ช่วง Running Free (1-5 ม.ค.)
+                        } else {
                             if (label === 'Free') {
-                                if (taskIndex === 0) {
-                                    bodyHTML += `<td rowspan="${TASK_CONFIG.length}" class="p-1 border-r border-gray-700/50 text-center text-[10px] font-bold align-middle text-indigo-300 bg-indigo-900/10 italic">วันวิ่ง<br>ฟรี</td>`;
-                                }
-                            }
-                            // 2.2 วันหยุด (พุธ-พฤหัส) Auto Off
-                            else if (isHoliday) {
-                                if (taskIndex === 0) {
-                                    bodyHTML += `<td rowspan="${TASK_CONFIG.length}" class="p-1 border-r border-gray-700/50 text-center text-[10px] font-bold align-middle text-gray-600 bg-[#1f1f1f]">หยุด</td>`;
-                                }
-                            }
-                            // 2.3 วันทำงานปกติ แต่ยังไม่ลงข้อมูล
-                            else {
+                                if (taskIndex === 0) bodyHTML += `<td rowspan="${TASK_CONFIG.length}" class="p-1 border-r border-gray-700/50 text-center text-[10px] font-bold align-middle text-indigo-300 bg-indigo-900/10 italic">วันวิ่ง<br>ฟรี</td>`;
+                            } else if (isHoliday) {
+                                if (taskIndex === 0) bodyHTML += `<td rowspan="${TASK_CONFIG.length}" class="p-1 border-r border-gray-700/50 text-center text-[10px] font-bold align-middle text-gray-600 bg-[#1f1f1f]">หยุด</td>`;
+                            } else {
                                 bodyHTML += `<td class="p-1 border-r border-gray-800/50 text-center text-xs text-gray-700">-</td>`;
                             }
                         }
                     }
-
                     bodyHTML += `</tr>`;
                 });
             });
@@ -818,7 +808,7 @@
             tbody.innerHTML = bodyHTML + footerHTML;
         }
 
-        // ================= DAILY DETAIL MODAL LOGIC (NEW) =================
+        // ================= DAILY DETAIL MODAL =================
         function openDailyDetail(day) {
             const monthInput = document.getElementById('team-month').value;
             if (!monthInput) return;
@@ -827,14 +817,12 @@
             const fullDate = `${yearStr}-${monthStr}-${day.toString().padStart(2, '0')}`;
             const dateObj = new Date(parseInt(yearStr), parseInt(monthStr)-1, day);
             
-            // 1. Setup Header
             const thDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             const { shift, isHoliday } = getShiftAndType(dateObj);
             
             document.getElementById('daily-modal-title').innerHTML = `<i class="fas fa-calendar-day text-indigo-500 mr-2"></i> ${thDate}`;
             document.getElementById('daily-modal-shift').innerHTML = `กะ: ${shift} ${isHoliday ? '(วันหยุด)' : ''}`;
             
-            // 2. Build User Cards
             const container = document.getElementById('daily-modal-content');
             container.innerHTML = '';
             
@@ -843,10 +831,8 @@
             ORDERED_USER_KEYS.forEach(uid => {
                 const u = users[uid];
                 const rec = records.find(r => r.userId === uid && r.workDate === fullDate);
-                
                 let uTotal = 0;
                 
-                // Header (Pic + Name)
                 const headerSection = `
                     <div class="flex items-center gap-3 w-32 shrink-0">
                         <div class="relative">
@@ -860,9 +846,7 @@
                     </div>
                 `;
 
-                // Content (Work items or Status)
                 let contentSection = '';
-                
                 if (rec) {
                     if (!rec.status || rec.status === 'work') {
                         uTotal = (rec.mlpr||0) + (rec.mnpr||0) + (rec.reconfirmed||0) + (rec.txn||0) + (rec.log||0) + (rec.temp||0) + (rec.qc||0) + (rec.royal||0);
@@ -888,7 +872,6 @@
                             contentSection = `<div class="flex-1 text-center text-gray-600 text-sm italic border border-dashed border-gray-700 rounded p-2">Standby / ไม่มีเคส</div>`;
                         }
                     } else {
-                        // Leave/Off Status
                         let statusTxt = rec.status;
                         let statusStyle = 'bg-gray-800 text-gray-400';
                         switch(rec.status) {
@@ -901,11 +884,9 @@
                         contentSection = `<div class="flex-1 flex justify-center"><span class="${statusStyle} px-4 py-2 rounded-lg font-bold text-sm w-full text-center max-w-[200px]">${statusTxt}</span></div>`;
                     }
                 } else {
-                    // No Record
                     contentSection = `<div class="flex-1 flex justify-center"><span class="text-gray-700 italic text-xs">... ยังไม่บันทึกข้อมูล ...</span></div>`;
                 }
 
-                // Total Section
                 const totalSection = `
                     <div class="flex flex-col items-end justify-center w-16 shrink-0 border-l border-gray-700 pl-3">
                         <span class="text-[10px] text-gray-500 uppercase font-bold">Total</span>
@@ -919,10 +900,7 @@
                 container.appendChild(rowDiv);
             });
 
-            // 3. Update Footer
             document.getElementById('daily-modal-total').innerText = grandTotal.toLocaleString();
-
-            // 4. Show Modal
             document.getElementById('daily-modal').classList.remove('hidden');
         }
 
@@ -937,8 +915,6 @@
         function renderSummaryUserList() { 
             const container = document.getElementById('summary-user-list'); 
             container.innerHTML = ''; 
-            
-            // 1. ดึงวันที่ที่เลือก
             const dVal = document.getElementById('summary-date').value;
 
             // Auto Select Shift Logic
@@ -955,8 +931,6 @@
 
             ORDERED_USER_KEYS.forEach(uid => { 
                 const u = users[uid];
-                
-                // 2. ดึงสถานะจาก Records
                 const record = records.find(r => r.userId === uid && r.workDate === dVal);
                 let currentStatus = (record && record.status) ? record.status : 'work';
 
@@ -965,7 +939,6 @@
                 row.dataset.active = "true";
                 row.className = "flex items-center justify-between bg-[#252525] px-3 py-2 rounded border border-gray-700/50 transition-all duration-300"; 
                 
-                // 3. สร้าง Select box โดยใส่ selected ให้ตรงกับสถานะ
                 row.innerHTML = `
                     <div class="flex items-center gap-3 cursor-pointer" onclick="toggleSumUser('${uid}')">
                         <div id="btn-power-${uid}" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)] transition-all"><i class="fas fa-power-off"></i></div>
@@ -989,34 +962,103 @@
         }
 
         function toggleSumUser(uid) {
-            const row = document.getElementById(`sum-row-${uid}`); const btn = document.getElementById(`btn-power-${uid}`); const info = document.getElementById(`info-${uid}`); const select = document.getElementById(`sum-status-${uid}`);
+            const row = document.getElementById(`sum-row-${uid}`); 
+            const btn = document.getElementById(`btn-power-${uid}`); 
+            const info = document.getElementById(`info-${uid}`); 
+            const select = document.getElementById(`sum-status-${uid}`);
+            
             const isActive = row.dataset.active === "true";
-            if (isActive) { row.dataset.active = "false"; btn.className = "w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center text-gray-600 transition-all"; info.className = "flex items-center gap-3 transition-all opacity-30 grayscale"; select.className = "bg-black text-white text-sm px-2 py-1 rounded border border-gray-800 outline-none opacity-20 pointer-events-none"; select.disabled = true; row.classList.remove('border-gray-700/50'); row.classList.add('border-transparent'); } 
-            else { row.dataset.active = "true"; btn.className = "w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)] transition-all"; info.className = "flex items-center gap-3 transition-all opacity-100 grayscale-0"; select.className = "bg-black text-white text-sm px-2 py-1 rounded border border-gray-600 outline-none focus:border-indigo-500 transition-opacity opacity-100 pointer-events-auto"; select.disabled = false; row.classList.add('border-gray-700/50'); row.classList.remove('border-transparent'); }
+            
+            if (isActive) { 
+                row.dataset.active = "false"; 
+                btn.className = "w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center text-gray-600 transition-all"; 
+                info.className = "flex items-center gap-3 transition-all opacity-30 grayscale"; 
+                select.className = "bg-black text-white text-sm px-2 py-1 rounded border border-gray-800 outline-none opacity-20 pointer-events-none"; 
+                select.disabled = true; 
+                row.classList.remove('border-gray-700/50'); 
+                row.classList.add('border-transparent'); 
+            } else { 
+                row.dataset.active = "true"; 
+                btn.className = "w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)] transition-all"; 
+                info.className = "flex items-center gap-3 transition-all opacity-100 grayscale-0"; 
+                select.className = "bg-black text-white text-sm px-2 py-1 rounded border border-gray-600 outline-none focus:border-indigo-500 transition-opacity opacity-100 pointer-events-auto"; 
+                select.disabled = false; 
+                row.classList.add('border-gray-700/50'); 
+                row.classList.remove('border-transparent'); 
+            }
         }
 
         function generateSummaryText() { 
-            const dVal = document.getElementById('summary-date').value; const shift = document.getElementById('summary-shift').value; const resultSection = document.getElementById('summary-result-section');
+            const dVal = document.getElementById('summary-date').value; 
+            const shift = document.getElementById('summary-shift').value; 
+            const resultSection = document.getElementById('summary-result-section');
+            
             if(!dVal) { showNotification('กรุณาเลือกวันที่ก่อน', 'error'); return; }
-            const [y, m, d] = dVal.split('-'); let txt = `สรุปรายงานประจำวันที่ ${d}/${m}/${parseInt(y)+543}\nกะ : ${shift}\n\n`; 
+            
+            const [y, m, d] = dVal.split('-'); 
+            let txt = `สรุปรายงานประจำวันที่ ${d}/${m}/${parseInt(y)+543}\nกะ : ${shift}\n\n`; 
+            
             ORDERED_USER_KEYS.forEach(uid => { 
-                const row = document.getElementById(`sum-row-${uid}`); if (row.dataset.active === "false") return;
-                const status = document.getElementById(`sum-status-${uid}`).value; const uName = users[uid].shortName;
+                const row = document.getElementById(`sum-row-${uid}`); 
+                if (row.dataset.active === "false") return;
+                
+                const status = document.getElementById(`sum-status-${uid}`).value; 
+                const uName = users[uid].shortName;
+                
                 if (status === 'work') { 
                     const rs = records.filter(r => r.userId === uid && r.workDate === dVal); 
                     if (rs.length > 0) {
-                        let s = { mlpr:0, mnpr:0, re:0, txn:0, log:0, temp:0, qc:0, royal:0 }; rs.forEach(r => { s.mlpr += (r.mlpr||0); s.mnpr += (r.mnpr||0); s.re += (r.reconfirmed||0); s.txn += (r.txn||0); s.log += (r.log||0); s.temp += (r.temp||0); s.qc += (r.qc||0); s.royal += (r.royal||0); }); 
-                        let tags = []; if(s.mlpr > 0) tags.push('ML'); if(s.mnpr > 0) tags.push('MN'); if(s.re > 0) tags.push('Re-Con.'); if(s.txn > 0) tags.push('TXN'); if(s.log > 0) tags.push('LOG'); if(s.temp > 0) tags.push('น้องถาม'); if(s.qc > 0) tags.push('QC TEMP'); if(s.royal > 0) tags.push('ขบวนเสด็จ');
-                        const details = tags.length ? tags.join(' / ') : 'Standby / ปกติ'; txt += `${uName} : ${details}\n`; 
-                    } else { txt += `${uName} : (รอลงข้อมูล)\n`; }
+                        let s = { mlpr:0, mnpr:0, re:0, txn:0, log:0, temp:0, qc:0, royal:0 }; 
+                        rs.forEach(r => { 
+                            if (!r.status || r.status === 'work') {
+                                s.mlpr += (r.mlpr||0); s.mnpr += (r.mnpr||0); s.re += (r.reconfirmed||0); 
+                                s.txn += (r.txn||0); s.log += (r.log||0); s.temp += (r.temp||0); 
+                                s.qc += (r.qc||0); s.royal += (r.royal||0); 
+                            }
+                        }); 
+                        
+                        let tags = []; 
+                        if(s.mlpr > 0) tags.push(`MLPR: ${s.mlpr}`); 
+                        if(s.mnpr > 0) tags.push(`MNPR: ${s.mnpr}`); 
+                        if(s.re > 0) tags.push(`Re-Con: ${s.re}`); 
+                        if(s.txn > 0) tags.push(`TXN: ${s.txn}`); 
+                        if(s.log > 0) tags.push(`LOG: ${s.log}`); 
+                        if(s.temp > 0) tags.push(`น้องถาม: ${s.temp}`); 
+                        if(s.qc > 0) tags.push(`QC: ${s.qc}`); 
+                        if(s.royal > 0) tags.push(`ขบวนเสด็จ: ${s.royal}`);
+                        
+                        const details = tags.length ? tags.join(' / ') : 'Standby / ปกติ'; 
+                        txt += `${uName} : ${details}\n`; 
+                    } else { 
+                        txt += `${uName} : (รอลงข้อมูล)\n`; 
+                    }
                 } else { 
-                    let statusText = ''; switch(status) { case 'vacation': statusText = 'ลาพักร้อน'; break; case 'sick': statusText = 'ลาป่วย'; break; case 'personal': statusText = 'ลากิจ'; break; case 'off': statusText = 'หยุด'; break; case 'swap': statusText = 'สลับกะ'; break; case 'absent': statusText = 'ขาดงาน'; break; default: statusText = '-'; }
+                    let statusText = ''; 
+                    switch(status) { 
+                        case 'vacation': statusText = 'ลาพักร้อน'; break; 
+                        case 'sick': statusText = 'ลาป่วย'; break; 
+                        case 'personal': statusText = 'ลากิจ'; break; 
+                        case 'off': statusText = 'หยุด'; break; 
+                        case 'swap': statusText = 'สลับกะ'; break; 
+                        case 'absent': statusText = 'ขาดงาน'; break; 
+                        default: statusText = '-'; 
+                    }
                     txt += `${uName} : ${statusText}\n`; 
                 } 
             }); 
-            document.getElementById('summary-text').value = txt; resultSection.classList.remove('hidden'); setTimeout(() => resultSection.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
+            
+            document.getElementById('summary-text').value = txt; 
+            resultSection.classList.remove('hidden'); 
+            setTimeout(() => resultSection.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
         }
-        function copySummaryAndClose() { const el = document.getElementById('summary-text'); el.select(); el.setSelectionRange(0,99999); navigator.clipboard.writeText(el.value); showNotification('คัดลอกสำเร็จ', 'success'); setTimeout(closeSummaryModal, 300); }
+
+        function copySummaryAndClose() { 
+            const el = document.getElementById('summary-text'); 
+            el.select(); el.setSelectionRange(0,99999); 
+            navigator.clipboard.writeText(el.value); 
+            showNotification('คัดลอกสำเร็จ', 'success'); 
+            setTimeout(closeSummaryModal, 300); 
+        }
     </script>
 </body>
 </html>
