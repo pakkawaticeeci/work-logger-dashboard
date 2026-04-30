@@ -86,7 +86,8 @@
             <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-500 mb-2">Work Logger</h1>
             <p class="text-gray-500">เลือกระบบผู้ใช้งานของคุณ</p>
         </div>
-        <div id="profile-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-4xl w-full justify-items-center"></div>
+        <!-- แก้ไข grid ให้รับ 5 คอลัมน์ -->
+        <div id="profile-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 max-w-5xl w-full justify-items-center"></div>
         
         <button onclick="openProfileModal()" class="mt-10 text-sm text-gray-500 hover:text-blue-600 transition-colors border border-custom hover:border-blue-500 rounded-full px-5 py-2 bg-white shadow-sm flex items-center gap-2">
             <i class="fas fa-cog"></i> จัดการรูปโปรไฟล์
@@ -338,7 +339,8 @@
         // ================= CONFIGURATION =================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVVjH8mj5ZwOFuSMdcg-bjb63DW70uTeonn2aNy0_26Feev3b1U-4ahnDxruvrQTiVaQ/exec'; 
 
-        const ORDERED_USER_KEYS = ['pop', 'ice', 'new', 'pook'];
+        // เพิ่ม 'mod' เข้าไปในรายชื่อเรียงลำดับ
+        const ORDERED_USER_KEYS = ['pop', 'ice', 'new', 'pook', 'mod'];
         
         const TASK_CONFIG = [
             { key: 'mlpr', label: 'MLPR', color: 'text-rose-500', bg: 'bg-rose-100 text-rose-700' },
@@ -351,14 +353,24 @@
             { key: 'royal', label: 'ขบวนเสด็จ', color: 'text-yellow-600', bg: 'bg-yellow-100 text-yellow-700' }
         ];
 
+        // เพิ่ม พี่มด เข้าไปใน Default Users
         const defaultUsers = {
             'pop': { name: 'น้องป๊อบ', shortName: 'ป๊อบ', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=P' },
             'ice': { name: 'ไอซ์', shortName: 'ไอซ์', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=I' },
             'new': { name: 'ไอสัสนิวสุดหล่อ', shortName: 'นิว', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=N' },
-            'pook': { name: 'พี่ปุ๊ก', shortName: 'ปุ๊ก', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=P' }
+            'pook': { name: 'พี่ปุ๊ก', shortName: 'ปุ๊ก', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=P' },
+            'mod': { name: 'พี่มด', shortName: 'มด', avatar: 'https://placehold.co/150x150/f1f5f9/475569?text=M' }
         };
         
-        let users = JSON.parse(localStorage.getItem('app_users_v2')) || defaultUsers;
+        // ผสานข้อมูล Default เข้ากับ LocalStorage (ป้องกันกรณี LocalStorage ไม่มี 'mod')
+        let savedUsers = JSON.parse(localStorage.getItem('app_users_v2')) || {};
+        let users = { ...defaultUsers, ...savedUsers };
+        
+        // บังคับเช็คอีกรอบ เผื่อ savedUsers ลบทิ้งไป
+        if(!users['mod']) {
+            users['mod'] = defaultUsers['mod'];
+        }
+
         let currentUser = null;
         let records = []; 
 
@@ -412,7 +424,10 @@
                     });
                     
                     if (result.users && Object.keys(result.users).length > 0) {
-                        users = result.users;
+                        // เก็บค่าเดิมของคนในเครื่องที่อาจไม่มีในเซิฟเวอร์ไว้ด้วย
+                        users = { ...users, ...result.users };
+                        if(!users['mod']) users['mod'] = defaultUsers['mod'];
+
                         localStorage.setItem('app_users_v2', JSON.stringify(users));
                         renderProfileGrid(); 
                         
@@ -488,14 +503,15 @@
             const grid = document.getElementById('profile-grid');
             grid.innerHTML = '';
             
-            Object.keys(users).forEach(uid => {
+            ORDERED_USER_KEYS.forEach(uid => {
+                if(!users[uid]) return;
                 const u = users[uid];
                 const card = document.createElement('div');
                 card.className = 'group flex flex-col items-center cursor-pointer transition-transform hover:-translate-y-1';
                 card.onclick = () => login(uid);
                 
                 card.innerHTML = `
-                    <div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white overflow-hidden shadow border border-custom group-hover:border-blue-500 group-hover:shadow-md transition-all">
+                    <div class="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl bg-white overflow-hidden shadow border border-custom group-hover:border-blue-500 group-hover:shadow-md transition-all">
                         <img src="${u.avatar}" alt="${u.name}" class="w-full h-full object-cover">
                     </div>
                     <span class="mt-4 text-gray-600 font-medium group-hover:text-blue-600 transition-colors">${u.name}</span>
@@ -1132,6 +1148,7 @@
             }
 
             ORDERED_USER_KEYS.forEach(uid => { 
+                if(!users[uid]) return;
                 const u = users[uid];
                 const record = records.find(r => r.userId === uid && r.workDate === dVal);
                 let currentStatus = (record && record.status) ? record.status : 'work';
@@ -1183,6 +1200,7 @@
             let txt = `สรุปรายงานประจำวันที่ ${d}/${m}/${parseInt(y)+543}\nกะ : ${shift}\n\n`; 
             
             ORDERED_USER_KEYS.forEach(uid => { 
+                if(!users[uid]) return;
                 const row = document.getElementById(`sum-row-${uid}`); 
                 if (row.dataset.active === "false") return;
                 
@@ -1247,6 +1265,7 @@
             `;
 
             ORDERED_USER_KEYS.forEach(uid => {
+                if(!users[uid]) return;
                 const u = users[uid];
                 container.innerHTML += `
                     <div class="flex items-center gap-4 bg-gray-50 p-3 border border-custom rounded-lg shadow-sm">
@@ -1267,6 +1286,7 @@
 
         async function saveProfiles() {
             ORDERED_USER_KEYS.forEach(uid => {
+                if(!users[uid]) return;
                 const val = document.getElementById(`avatar-input-${uid}`).value.trim();
                 if (val) users[uid].avatar = val;
             });
